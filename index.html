@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>AquaGuard</title>
+
+</head>
+
+<body>
+
+<h1>💧 AquaGuard</h1>
+
+<p>Water Quality Monitoring System</p>
+
+<h2>Turbidity Simulator</h2>
+
+<input type="range" id="reading" min="0" max="100" value="3" oninput="checkWater()">
+
+<h2 id="value">3</h2>
+
+<h3 id="status">Within demo range</h3>
+
+<p id="message"></p>
+
+<script>
+
+function checkWater() {
+
+let reading = Number(document.getElementById("reading").value);
+
+document.getElementById("value").innerText = reading;
+
+if (reading > 5) {
+
+document.getElementById("status").innerText = "Abnormal reading";
+
+document.getElementById("message").innerText = "Further testing needed.";
+
+} else {
+
+document.getElementById("status").innerText = "Within demo range";
+
+document.getElementById("message").innerText = "No alert triggered.";
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
