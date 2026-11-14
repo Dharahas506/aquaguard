@@ -1,55 +1,410 @@
+
+
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
-<title>AquaGuard</title>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AquaGuard</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: #eaf6ff;
+
+      text-align: center;
+
+      padding: 20px;
+
+      color: #123;
+
+    }
+
+    h1 {
+
+      color: #087db5;
+
+      font-size: 36px;
+
+    }
+
+    .card {
+
+      background: white;
+
+      padding: 24px;
+
+      border-radius: 16px;
+
+      max-width: 500px;
+
+      margin: 20px auto;
+
+      box-shadow: 0 4px 12px #00000012;
+
+    }
+
+    input[type="range"] {
+
+      width: 85%;
+
+      accent-color: #078dcc;
+
+    }
+
+    button {
+
+      background: #078dcc;
+
+      color: white;
+
+      border: none;
+
+      padding: 12px 22px;
+
+      border-radius: 9px;
+
+      font-size: 16px;
+
+      cursor: pointer;
+
+    }
+
+    button:hover {
+
+      background: #056b99;
+
+    }
+
+    #gameArea {
+
+      height: 230px;
+
+      background: #d9f2ff;
+
+      border: 2px solid #9bdcf5;
+
+      border-radius: 12px;
+
+      position: relative;
+
+      overflow: hidden;
+
+      margin-top: 15px;
+
+    }
+
+    #drop {
+
+      position: absolute;
+
+      font-size: 38px;
+
+      cursor: pointer;
+
+      border: none;
+
+      background: transparent;
+
+      padding: 0;
+
+      transition: left 0.15s, top 0.15s;
+
+    }
+
+    .small {
+
+      color: #526879;
+
+      font-size: 13px;
+
+    }
+
+  </style>
 
 </head>
 
 <body>
 
-<h1>💧 AquaGuard</h1>
+  <h1>💧 AquaGuard</h1>
 
-<p>Water Quality Monitoring System</p>
+  <p>Water Quality Monitoring System</p>
 
-<h2>Turbidity Simulator</h2>
+  <div class="card">
 
-<input type="range" id="reading" min="0" max="100" value="3" oninput="checkWater()">
+    <h2>📊 Turbidity Simulator</h2>
 
-<h2 id="value">3</h2>
+    <p>Move the slider to simulate a turbidity reading:</p>
 
-<h3 id="status">Within demo range</h3>
+    <input
 
-<p id="message"></p>
+      type="range"
 
-<script>
+      id="reading"
 
-function checkWater() {
+      min="0"
 
-let reading = Number(document.getElementById("reading").value);
+      max="100"
 
-document.getElementById("value").innerText = reading;
+      value="3"
 
-if (reading > 5) {
+      oninput="checkWater()"
 
-document.getElementById("status").innerText = "Abnormal reading";
+    >
 
-document.getElementById("message").innerText = "Further testing needed.";
+    <h2 id="value">3</h2>
 
-} else {
+    <h3 id="status">Within demo range</h3>
 
-document.getElementById("status").innerText = "Within demo range";
+    <p id="message">No alert triggered.</p>
 
-document.getElementById("message").innerText = "No alert triggered.";
+    <p class="small">
 
-}
+      Demo alert threshold: 5. This is an example value,
 
-}
+      not an official drinking-water safety limit.
 
-</script>
+    </p>
+
+  </div>
+
+  <div class="card">
+
+    <h2>🔬 What is Turbidity?</h2>
+
+    <p>
+
+      Turbidity measures how cloudy or unclear water is
+
+      because of tiny particles suspended in it.
+
+    </p>
+
+    <p>
+
+      Higher turbidity generally means more particles
+
+      are present and the water looks cloudier.
+
+    </p>
+
+    <p>
+
+      Monitoring turbidity can help identify changes
+
+      in water quality and indicate when further testing
+
+      may be needed.
+
+    </p>
+
+    <p>
+
+      <strong>Important:</strong> Turbidity alone cannot
+
+      tell us whether water is safe to drink. Other tests
+
+      are needed too.
+
+    </p>
+
+  </div>
+
+  <div class="card">
+
+    <h2>🎮 Water Drop Challenge</h2>
+
+    <p>
+
+      Tap as many water drops as you can in 20 seconds!
+
+    </p>
+
+    <h3>Score: <span id="score">0</span></h3>
+
+    <h3>Time: <span id="timer">20</span> seconds</h3>
+
+    <button id="startButton" onclick="startGame()">
+
+      Start Game
+
+    </button>
+
+    <div id="gameArea">
+
+      <button
+
+        id="drop"
+
+        onclick="hitDrop()"
+
+        style="display:none; left:40%; top:40%;"
+
+        aria-label="Tap water drop"
+
+      >💧</button>
+
+    </div>
+
+    <h3 id="gameMessage">Ready to play?</h3>
+
+  </div>
+
+  <p class="small">
+
+    AquaGuard is a student STEM demonstration project.
+
+  </p>
+
+  <script>
+
+    function checkWater() {
+
+      let reading = Number(
+
+        document.getElementById("reading").value
+
+      );
+
+      document.getElementById("value").innerText = reading;
+
+      if (reading > 5) {
+
+        document.getElementById("status").innerText =
+
+          "⚠️ Abnormal reading";
+
+        document.getElementById("message").innerText =
+
+          "Further water testing is needed.";
+
+      } else {
+
+        document.getElementById("status").innerText =
+
+          "Within demo range";
+
+        document.getElementById("message").innerText =
+
+          "No alert triggered.";
+
+      }
+
+    }
+
+    let score = 0;
+
+    let timeLeft = 20;
+
+    let gameRunning = false;
+
+    let gameTimer;
+
+    let moveTimer;
+
+    function moveDrop() {
+
+      const area = document.getElementById("gameArea");
+
+      const drop = document.getElementById("drop");
+
+      const maxX = area.clientWidth - drop.offsetWidth;
+
+      const maxY = area.clientHeight - drop.offsetHeight;
+
+      const x = Math.random() * Math.max(0, maxX);
+
+      const y = Math.random() * Math.max(0, maxY);
+
+      drop.style.left = x + "px";
+
+      drop.style.top = y + "px";
+
+    }
+
+    function startGame() {
+
+      if (gameRunning) return;
+
+      score = 0;
+
+      timeLeft = 20;
+
+      gameRunning = true;
+
+      document.getElementById("score").innerText = score;
+
+      document.getElementById("timer").innerText = timeLeft;
+
+      document.getElementById("gameMessage").innerText =
+
+        "Go! Tap the drops!";
+
+      document.getElementById("startButton").disabled = true;
+
+      document.getElementById("drop").style.display = "block";
+
+      moveDrop();
+
+      moveTimer = setInterval(moveDrop, 850);
+
+      gameTimer = setInterval(function() {
+
+        timeLeft--;
+
+        document.getElementById("timer").innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+
+          endGame();
+
+        }
+
+      }, 1000);
+
+    }
+
+    function hitDrop() {
+
+      if (!gameRunning) return;
+
+      score++;
+
+      document.getElementById("score").innerText = score;
+
+      moveDrop();
+
+    }
+
+    function endGame() {
+
+      gameRunning = false;
+
+      clearInterval(gameTimer);
+
+      clearInterval(moveTimer);
+
+      document.getElementById("drop").style.display = "none";
+
+      document.getElementById("startButton").disabled = false;
+
+      document.getElementById("gameMessage").innerText =
+
+        "Time's up! You scored " + score + " points!";
+
+    }
+
+  </script>
 
 </body>
 
 </html>
+
